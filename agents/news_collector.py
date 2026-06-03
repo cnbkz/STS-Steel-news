@@ -288,11 +288,12 @@ class NewsCollector:
                         published_at = dt_str[:10]
                     break
 
-            # OG 이미지
+            # OG 이미지 (http → https 강제 변환으로 Mixed Content 방지)
             image_url = None
             og_img = soup.select_one("meta[property='og:image']")
             if og_img:
-                image_url = og_img.get("content")
+                raw = og_img.get("content", "")
+                image_url = raw.replace("http://", "https://") if raw else None
 
             category = self._guess_category(title + " " + content)
             keywords_matched = self._find_matching_keywords(title + " " + content)
@@ -361,7 +362,7 @@ MOCK_ARTICLES = [
         "url": "https://www.snmnews.com/news/articleView.html?idxno=570067",
         "source": "철강금속신문-STS",
         "content": "300계 할증료 7개월 연속 인상…몰리브데넘계 폭등, 316강종 6월에만 31만 원 인상. 글로벌 STS 밀 6월 동조화 뚜렷…국내 STS밀 압박 유지. 니켈 LME 현물가격은 톤당 16,800달러 수준으로 전주 대비 120달러 하락했다.",
-        "image_url": "https://picsum.photos/seed/sts001/400/220",
+        "image_url": None,
         "category": "가격동향",
         "published_at": datetime.now().strftime("%Y-%m-%d"),
         "keywords_matched": ["STS", "스테인리스", "냉연", "니켈", "304", "316"],
@@ -373,7 +374,7 @@ MOCK_ARTICLES = [
         "url": "https://www.snmnews.com/news/articleView.html?idxno=569979",
         "source": "철강금속신문-STS",
         "content": "몰리브데넘 고첨가 강종 STS316(L)·316Ti 할증료 전월比 8.7% 폭등…304강종도 7.8% 인상. 페라이트계 STS430 할증료는 소폭 인상에 그쳐 대조. 국내 STS 정밀재 수요가 회복 조짐을 보이고 있으며 가전·자동차 부품 발주가 전주 대비 15% 증가했다.",
-        "image_url": "https://picsum.photos/seed/sts002/400/220",
+        "image_url": None,
         "category": "가격동향",
         "published_at": datetime.now().strftime("%Y-%m-%d"),
         "keywords_matched": ["STS", "스테인리스", "정밀재", "304", "316"],
@@ -385,7 +386,7 @@ MOCK_ARTICLES = [
         "url": "https://www.snmnews.com/news/articleView.html?idxno=570038",
         "source": "철강금속신문-STS",
         "content": "유럽 주요 STS 제강사 3곳이 6월 할증료를 일제히 인상했다. 316강종은 전월 대비 200유로 급등하며 시장에 충격을 줬다. LME 니켈 선물 가격이 반등을 시도하며 LME 니켈 재고는 전주 대비 1,200톤 감소한 78,000톤을 기록했다.",
-        "image_url": "https://picsum.photos/seed/sts003/400/220",
+        "image_url": None,
         "category": "가격동향",
         "published_at": datetime.now().strftime("%Y-%m-%d"),
         "keywords_matched": ["STS", "스테인리스", "304", "316", "가격"],
@@ -397,7 +398,7 @@ MOCK_ARTICLES = [
         "url": "https://www.snmnews.com/news/articleView.html?idxno=569924",
         "source": "철강금속신문-STS",
         "content": "중국 STS 생산이 내수 부진에도 사상 최대치를 기록했다. 4월 생산량은 371만 톤으로 전월 대비 2.8% 증가. 올 들어 중국산 STS 냉연 수입이 전년 동기 대비 23% 증가해 국내 STS 정밀재 가격에 하방 압력을 가하고 있다.",
-        "image_url": "https://picsum.photos/seed/sts004/400/220",
+        "image_url": None,
         "category": "통상정책",
         "published_at": datetime.now().strftime("%Y-%m-%d"),
         "keywords_matched": ["STS", "스테인리스", "냉연", "수입재", "중국산"],
@@ -409,7 +410,7 @@ MOCK_ARTICLES = [
         "url": "https://www.snmnews.com/news/articleView.html?idxno=569983",
         "source": "철강금속신문-STS",
         "content": "이번 주 국내 STS 304 2B 0.5mm 기준 가격은 전주 대비 톤당 2만원 하락한 220만원 수준에서 거래되고 있다. 316L은 전주와 유사한 수준인 280만원대를 유지하고 있으며, 430 2B는 150만원대 초반에서 유통되고 있다.",
-        "image_url": "https://picsum.photos/seed/sts005/400/220",
+        "image_url": None,
         "category": "가격동향",
         "published_at": datetime.now().strftime("%Y-%m-%d"),
         "keywords_matched": ["STS", "스테인리스", "304", "316", "430", "가격"],
@@ -421,7 +422,7 @@ MOCK_ARTICLES = [
         "url": "https://www.steeldaily.co.kr/news/articleView.html?idxno=200480",
         "source": "철강데일리-스테인리스",
         "content": "STS 열연과 냉연 수입이 동반 감소세를 보이고 있다. 고원가 부담으로 바이어들의 계약 체결이 주춤하고 있으며, 중국산 수입재 가격 경쟁력도 다소 약화된 것으로 분석된다.",
-        "image_url": "https://picsum.photos/seed/sts006/400/220",
+        "image_url": None,
         "category": "시황",
         "published_at": datetime.now().strftime("%Y-%m-%d"),
         "keywords_matched": ["STS", "스테인리스", "냉연", "수입재", "가격"],
@@ -433,7 +434,7 @@ MOCK_ARTICLES = [
         "url": "https://www.snmnews.com/news/articleView.html?idxno=569983",
         "source": "철강금속신문-STS",
         "content": "포스코가 세계스테인리스협회 어워드에서 3개 부문을 석권했다. 냉매배관 STS 대체 프로젝트가 혁신상을 수상하며 기술력을 인정받았다.",
-        "image_url": "https://picsum.photos/seed/sts007/400/220",
+        "image_url": None,
         "category": "시황",
         "published_at": datetime.now().strftime("%Y-%m-%d"),
         "keywords_matched": ["STS", "스테인리스", "정밀재"],

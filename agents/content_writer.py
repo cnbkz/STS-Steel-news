@@ -254,15 +254,26 @@ class ContentWriter:
             badge    = cat_badge(category) if category else ""
             border_r = "" if i == 2 else "border-right:1px solid #e5e5e5;"
 
+            # 카테고리별 placeholder 색상
+            _ph_colors = {"가격동향":("#c41c22","#7b0d0d"), "시황":("#0950a8","#16294f"),
+                          "원자재":("#2e7d32","#1b5e20"), "통상정책":("#e65100","#bf360c")}
+            _c1, _c2 = _ph_colors.get(category, ("#1e3d72","#16294f"))
+            _cat_label = category or "STS NEWS"
+
             img_block = (
                 f'<a href="{url}" target="_blank" style="display:block;overflow:hidden;height:148px;">'
                 f'<img src="{img_url}" alt="" width="100%"'
                 f' style="width:100%;height:148px;object-fit:cover;display:block;border:none;"></a>'
             ) if img_url else (
-                f'<a href="{url}" target="_blank"'
-                f' style="display:block;height:148px;background:linear-gradient(135deg,#16294f 0%,#2578d6 100%);'
-                f'text-align:center;line-height:148px;font-size:36px;text-decoration:none;">'
-                f'&#128295;</a>'
+                f'<a href="{url}" target="_blank" style="display:block;text-decoration:none;">'
+                f'<div style="height:148px;background:linear-gradient(135deg,{_c1} 0%,{_c2} 100%);'
+                f'text-align:center;padding-top:40px;">'
+                f'<div style="color:rgba(255,255,255,0.25);font-size:42px;line-height:1;">◈</div>'
+                f'<div style="color:rgba(255,255,255,0.8);font-size:12px;font-weight:700;'
+                f'letter-spacing:2px;margin-top:10px;">{_cat_label}</div>'
+                f'<div style="color:rgba(255,255,255,0.4);font-size:10px;margin-top:4px;'
+                f'letter-spacing:1px;">STS PRECISION STEEL</div>'
+                f'</div></a>'
             )
 
             card_cells += f"""
@@ -293,6 +304,8 @@ class ContentWriter:
             pub_date = art.get("published_at", "")[:10]
             category = art.get("category", "")
 
+            _ph2 = {"가격동향":"#c41c22","시황":"#0950a8","원자재":"#2e7d32","통상정책":"#e65100"}
+            _pc = _ph2.get(category, "#16294f")
             img_td = (
                 f'<td width="64" style="vertical-align:top;padding-right:10px;">'
                 f'<a href="{url}" target="_blank"'
@@ -301,9 +314,11 @@ class ContentWriter:
                 f' style="width:64px;height:48px;object-fit:cover;display:block;border:none;"></a></td>'
             ) if img_url else (
                 f'<td width="64" style="vertical-align:top;padding-right:10px;">'
-                f'<a href="{url}" target="_blank"'
-                f' style="display:block;width:64px;height:48px;background:#e8ecf0;'
-                f'text-align:center;line-height:48px;font-size:18px;text-decoration:none;">&#9881;</a></td>'
+                f'<div style="width:64px;height:48px;background:linear-gradient(135deg,{_pc},{_pc}99);'
+                f'text-align:center;padding-top:14px;">'
+                f'<div style="color:rgba(255,255,255,0.9);font-size:10px;font-weight:700;'
+                f'letter-spacing:1px;">STS</div>'
+                f'</div></td>'
             )
 
             news_list_html += f"""
