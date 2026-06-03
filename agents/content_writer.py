@@ -240,9 +240,15 @@ class ContentWriter:
                     f'font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;'
                     f'border:1px solid {fg};letter-spacing:0.3px;">{category}</span>')
 
-        # ── 카드뉴스 셀 (이미지 있는 기사 우선 3건) ──────────
-        with_img    = [a for a in articles if a.get("image_url")]
-        without_img = [a for a in articles if not a.get("image_url")]
+        # ── Mock 기사 제거 후, 이미지 있는 기사 우선 정렬 ──────
+        def _is_mock(a: dict) -> bool:
+            return "mock" in a.get("url", "") or "mock" in a.get("url_hash", "")
+
+        real_arts   = [a for a in articles if not _is_mock(a)]
+        display_arts = real_arts if real_arts else articles  # 실기사 없으면 전체 사용
+
+        with_img    = [a for a in display_arts if a.get("image_url")]
+        without_img = [a for a in display_arts if not a.get("image_url")]
         card_articles = (with_img + without_img)[:3]
         card_cells = ""
         for i, art in enumerate(card_articles):
@@ -296,9 +302,12 @@ class ContentWriter:
               </div>
             </td>"""
 
-        # ── 우측 뉴스 리스트 (4~12번 기사) ──────────────────
+        # ── 우측 뉴스 리스트 (Mock 제외, 이미지 있는 기사 우선) ──
         news_list_html = ""
-        for art in articles[3:12]:
+        list_with_img    = [a for a in display_arts if a.get("image_url")][3:]
+        list_without_img = [a for a in display_arts if not a.get("image_url")][3:]
+        list_articles    = (list_with_img + list_without_img)[:9]
+        for art in list_articles:
             img_url  = art.get("image_url") or ""
             title    = art.get("title", "")[:48]
             url      = art.get("url", "#")
