@@ -20,7 +20,7 @@ schedule:
 
 newsletter:
   volume_start: 1
-  max_articles: 10
+  max_articles: 15
   llm_model: "claude-sonnet-4-6"
   llm_provider: "anthropic"  # openai | anthropic | mock
 

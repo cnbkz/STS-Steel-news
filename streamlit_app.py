@@ -403,6 +403,68 @@ if run_all:
     except Exception as e:
         status_area.error(f"❌ 파이프라인 오류: {str(e)}")
 
+# ── 뉴스레터 빠른 미리보기 ────────────────────────────────
+st.markdown("---")
+st.markdown('<div class="section-title">👁️ 뉴스레터 빠른 미리보기</div>', unsafe_allow_html=True)
+
+col_qp1, col_qp2, col_qp3 = st.columns([2, 2, 1])
+with col_qp1:
+    quick_preview_btn = st.button(
+        "🔍 뉴스 수집 후 미리보기 생성",
+        use_container_width=True,
+        help="최신 기사를 수집하고 뉴스레터 HTML을 즉시 생성합니다."
+    )
+with col_qp2:
+    db_preview_btn = st.button(
+        "📋 DB 기사로 미리보기 생성",
+        use_container_width=True,
+        help="이미 수집된 DB 기사로 미리보기를 생성합니다."
+    )
+with col_qp3:
+    if "dash_preview_html" in st.session_state:
+        st.download_button(
+            "📥 HTML",
+            st.session_state["dash_preview_html"].encode("utf-8"),
+            file_name=f"preview_{datetime.now().strftime('%Y%m%d')}.html",
+            mime="text/html",
+            use_container_width=True,
+        )
+
+if quick_preview_btn or db_preview_btn:
+    from agents.news_collector import NewsCollector, get_mock_articles
+    from agents.content_writer import ContentWriter
+    from db.database import get_recent_articles as _get_articles
+
+    with st.spinner("미리보기 생성 중..."):
+        if quick_preview_btn:
+            try:
+                articles = NewsCollector().collect()
+                for a in articles:
+                    insert_article({**a, "score": a.get("score", 0)})
+            except Exception:
+                articles = get_mock_articles()
+        else:
+            articles = _get_articles(limit=15)
+            if not articles:
+                articles = get_mock_articles()
+
+        writer = ContentWriter(provider="mock")
+        nl = writer.write_newsletter(articles)
+        st.session_state["dash_preview_html"]    = nl["html_body"]
+        st.session_state["dash_preview_subject"] = nl["subject"]
+
+    st.success(f"✅ {nl['subject']}")
+
+if "dash_preview_html" in st.session_state:
+    with st.expander(
+        f"📧 {st.session_state.get('dash_preview_subject','뉴스레터 미리보기')}",
+        expanded=True
+    ):
+        st.components.v1.html(
+            st.session_state["dash_preview_html"],
+            height=700, scrolling=True
+        )
+
 # ── 최근 뉴스레터 이력 ────────────────────────────────────
 st.markdown("---")
 col_left, col_right = st.columns([3, 2])

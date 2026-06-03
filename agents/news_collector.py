@@ -134,7 +134,7 @@ class NewsCollector:
                     seen_urls.add(url)
                     unique_links.append((url, title))
 
-            for url, title in unique_links[:15]:
+            for url, title in unique_links[:20]:
                 if self._is_excluded(title):
                     continue
                 article = self._fetch_article(url, title, source_name)
@@ -231,7 +231,7 @@ class NewsCollector:
                         seen_urls.add(full_url)
                         links.append((full_url, title_text))
 
-            for url, title in links[:15]:
+            for url, title in links[:20]:
                 if self._is_excluded(title):
                     continue
                 article = self._fetch_korean_article(url, title, source_name)
