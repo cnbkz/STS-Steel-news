@@ -240,8 +240,10 @@ class ContentWriter:
                     f'font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;'
                     f'border:1px solid {fg};letter-spacing:0.3px;">{category}</span>')
 
-        # ── 카드뉴스 셀 (상위 3건) ──────────────────────────
-        card_articles = articles[:3]
+        # ── 카드뉴스 셀 (이미지 있는 기사 우선 3건) ──────────
+        with_img    = [a for a in articles if a.get("image_url")]
+        without_img = [a for a in articles if not a.get("image_url")]
+        card_articles = (with_img + without_img)[:3]
         card_cells = ""
         for i, art in enumerate(card_articles):
             img_url  = art.get("image_url") or ""

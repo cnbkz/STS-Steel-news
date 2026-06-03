@@ -288,12 +288,34 @@ class NewsCollector:
                         published_at = dt_str[:10]
                     break
 
-            # OG 이미지 (http → https 강제 변환으로 Mixed Content 방지)
+            # 이미지 추출 (다중 소스 시도, http → https 변환)
             image_url = None
-            og_img = soup.select_one("meta[property='og:image']")
-            if og_img:
-                raw = og_img.get("content", "")
-                image_url = raw.replace("http://", "https://") if raw else None
+            img_candidates = [
+                soup.select_one("meta[property='og:image']"),
+                soup.select_one("meta[name='og:image']"),
+                soup.select_one("meta[name='twitter:image']"),
+                soup.select_one("meta[property='twitter:image']"),
+                soup.select_one("meta[name='thumbnail']"),
+            ]
+            for cand in img_candidates:
+                if cand:
+                    raw = cand.get("content") or cand.get("value") or ""
+                    if raw and raw.startswith("http"):
+                        image_url = raw.replace("http://", "https://")
+                        break
+
+            # og:image가 없으면 본문 첫 번째 <img> 시도
+            if not image_url:
+                for sel in ["#article-view-content-div img",
+                            ".article-view-content img",
+                            "#articleBody img",
+                            ".article_content img"]:
+                    img_tag = soup.select_one(sel)
+                    if img_tag:
+                        src = img_tag.get("src") or ""
+                        if src and ("thumb" in src or "photo" in src or ".jpg" in src or ".png" in src):
+                            image_url = src.replace("http://", "https://")
+                            break
 
             category = self._guess_category(title + " " + content)
             keywords_matched = self._find_matching_keywords(title + " " + content)
