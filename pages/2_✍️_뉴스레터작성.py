@@ -7,7 +7,7 @@ from datetime import datetime
 
 st.set_page_config(page_title="뉴스레터 작성 | STS뉴스레터", page_icon="✍️", layout="wide")
 
-from db.database import init_db, get_recent_articles, save_newsletter, get_next_volume, get_newsletters
+from db.database import init_db, get_recent_articles, save_newsletter, get_next_volume
 from agents.news_collector import get_mock_articles
 from agents.content_writer import ContentWriter
 
@@ -141,7 +141,7 @@ if gen_btn or "current_newsletter" in st.session_state:
     with tab2:
         st.markdown(f"**📧 이메일 제목**: `{nl.get('subject','')}`")
         st.markdown('<div class="preview-frame">', unsafe_allow_html=True)
-        st.components.v1.html(nl.get("html_body","<p>미리보기가 없습니다.</p>"), height=700, scrolling=True)
+        st.components.v1.html(nl.get("html_body","<p>미리보기가 없습니다.</p>"), height=1600, scrolling=True)
         st.markdown('</div>', unsafe_allow_html=True)
 
     # ── 탭3: 카카오 미리보기 ─────────────────────────────

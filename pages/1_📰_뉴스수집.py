@@ -3,7 +3,6 @@ import sys, os
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 import streamlit as st
-import pandas as pd
 from datetime import datetime
 
 st.set_page_config(page_title="뉴스 수집 | STS뉴스레터", page_icon="📰", layout="wide")
@@ -166,7 +165,7 @@ if articles_for_preview:
           </div>
         </div>
         """, unsafe_allow_html=True)
-        st.components.v1.html(st.session_state["preview_html"], height=750, scrolling=True)
+        st.components.v1.html(st.session_state["preview_html"], height=1600, scrolling=True)
 
 # ── 수집 기사 목록 ───────────────────────────────────────────
 st.markdown("---")

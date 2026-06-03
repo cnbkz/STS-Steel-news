@@ -8,7 +8,6 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import streamlit as st
 import pandas as pd
 from datetime import datetime, timedelta
-import time
 
 # ── 페이지 설정 ────────────────────────────────────────────
 st.set_page_config(
@@ -462,7 +461,7 @@ if "dash_preview_html" in st.session_state:
     ):
         st.components.v1.html(
             st.session_state["dash_preview_html"],
-            height=700, scrolling=True
+            height=1600, scrolling=True
         )
 
 # ── 최근 뉴스레터 이력 ────────────────────────────────────
