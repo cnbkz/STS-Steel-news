@@ -1,0 +1,9 @@
+name,email,phone,group_name,email_subscribed,kakao_subscribed
+김철수,kim.cs@example.com,010-1234-5678,영업팀,1,1
+이영희,lee.yh@example.com,010-2345-6789,구매팀,1,1
+박민준,park.mj@example.com,010-3456-7890,경영지원,1,0
+최지은,choi.je@example.com,010-4567-8901,영업팀,1,1
+정상호,jung.sh@example.com,010-5678-9012,생산팀,1,0
+한소라,han.sr@example.com,010-6789-0123,구매팀,0,1
+오태양,oh.ty@example.com,010-7890-1234,경영지원,1,1
+신미래,shin.mr@example.com,010-8901-2345,영업팀,1,1

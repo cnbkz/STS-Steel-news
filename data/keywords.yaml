@@ -1,0 +1,44 @@
+primary:
+  - keyword: "STS"
+    weight: 3
+  - keyword: "스테인리스"
+    weight: 3
+  - keyword: "정밀재"
+    weight: 3
+  - keyword: "냉연"
+    weight: 2
+  - keyword: "니켈"
+    weight: 3
+  - keyword: "304"
+    weight: 2
+  - keyword: "316"
+    weight: 2
+  - keyword: "430"
+    weight: 2
+
+secondary:
+  - keyword: "크롬"
+    weight: 2
+  - keyword: "철강"
+    weight: 1
+  - keyword: "열연"
+    weight: 1
+  - keyword: "시황"
+    weight: 1
+  - keyword: "가격"
+    weight: 1
+  - keyword: "수입재"
+    weight: 1
+  - keyword: "수출"
+    weight: 1
+  - keyword: "합금철"
+    weight: 2
+  - keyword: "몰리브덴"
+    weight: 2
+
+exclude:
+  - "광고"
+  - "채용"
+  - "이벤트"
+  - "공지"
+  - "구인"

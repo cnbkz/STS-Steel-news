@@ -1,0 +1,74 @@
+service:
+  name: "STS정밀재 주간뉴스레터"
+  version: "1.0.0"
+
+company:
+  name: "토탈머티리얼즈"
+  ceo: "백우혁"
+  email: "total_materials@naver.com"
+  phone: "010-4733-9821"
+  address_ansan: "경기도 안산시 단원구 별망로459번길 109 (목내동) 1층 105호"
+  address_hq: "서울특별시 금천구 가산디지털2로 40, 3층(가산동)"
+  website: "https://www.steelinfosys.com"
+  business: "STS/AL/CU/특수강 etc · 원자재 컨설팅 및 개발"
+
+schedule:
+  day_of_week: monday
+  hour: 8
+  minute: 0
+  timezone: "Asia/Seoul"
+
+newsletter:
+  volume_start: 1
+  max_articles: 10
+  llm_model: "claude-sonnet-4-6"
+  llm_provider: "anthropic"  # openai | anthropic | mock
+
+sources:
+  - url: "https://www.snmnews.com/news/articleList.html?sc_serial_code=SRN469&view_type=sm"
+    name: "철강금속신문-STS"
+    type: "korean_news"
+    base_url: "https://www.snmnews.com"
+    enabled: true
+  - url: "https://www.steeldaily.co.kr/news/articleList.html?sc_sub_section_code=S2N11&view_type=sm"
+    name: "철강데일리-스테인리스"
+    type: "korean_news"
+    base_url: "https://www.steeldaily.co.kr"
+    enabled: true
+
+keywords:
+  primary:
+    - "STS"
+    - "스테인리스"
+    - "정밀재"
+    - "냉연"
+    - "니켈"
+  secondary:
+    - "크롬"
+    - "철강"
+    - "열연"
+    - "시황"
+    - "가격"
+    - "304"
+    - "316"
+    - "2B"
+  exclude:
+    - "광고"
+    - "채용"
+    - "이벤트"
+
+email:
+  provider: smtp
+  smtp_host: "smtp.gmail.com"
+  smtp_port: 587
+  use_tls: true
+  sender_name: "토탈머티리얼즈 뉴스레터"
+  sender_email: "cnbkaz@gmail.com"
+  rate_limit_per_second: 3
+  max_retry: 3
+  retry_delay_seconds: 30
+
+notification:
+  kakao_enabled: true
+  sms_fallback: false
+  simulation_mode: true
